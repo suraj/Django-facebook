@@ -472,8 +472,7 @@ class FacebookAuthorization(FacebookConnection):
         sig = base64_url_decode_php_style(encoded_sig)
         import hmac
         import hashlib
-        data = json.loads(base64_url_decode_php_style(payload))
-
+        data = json.loads(base64_url_decode_php_style(payload).decode('ascii'))
         algo = data.get('algorithm').upper()
         if algo != 'HMAC-SHA256':
             error_format = 'Unknown algorithm we only support HMAC-SHA256 user asked for %s'
@@ -482,7 +481,7 @@ class FacebookAuthorization(FacebookConnection):
             logger.error('Unknown algorithm')
             return None
         else:
-            expected_sig = hmac.new(secret, msg=payload,
+            expected_sig = hmac.new(secret.encode('ascii'), msg=payload.encode('ascii'),
                                     digestmod=hashlib.sha256).digest()
 
         if sig != expected_sig:
