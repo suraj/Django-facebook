@@ -178,8 +178,8 @@ class FacebookConnection(object):
             timeout_mp += 1
             extended_timeout = timeout * timeout_mp
             response_file = None
-            encoded_params = encode_params(post_data) if post_data else None
-            post_string = (urlencode(encoded_params)
+            #encoded_params = encode_params(post_data) if post_data else None
+            post_string = (urlencode(post_data).encode('utf-8')
                            if post_data else None)
             try:
                 start_statsd('facebook.%s' % statsd_path)
